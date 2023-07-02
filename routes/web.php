@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -31,5 +31,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/auth/{provider}', [SocialLoginController::class, 'redirectToProvider']);
 Route::get('/auth/{provider}/callback', [SocialLoginController::class, 'handleProviderCallback']);
+
+Route::post('/card', [CartController::class, 'addToCart'])->name('cart.store');
 
 require __DIR__ . '/auth.php';
