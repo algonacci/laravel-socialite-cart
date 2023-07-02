@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::get('/auth/{provider}', [SocialLoginController::class, 'redirectToProvider']);
+Route::get('/auth/{provider}/callback', [SocialLoginController::class, 'handleProviderCallback']);
+
+require __DIR__ . '/auth.php';
